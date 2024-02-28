@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GameShop</string>
+    <string name="first_name_placeholder">First Name</string>
+    <string name="last_name_placeholder">Last Name</string>
+    <string name="email_placeholder">Email</string>
+    <string name="password_placeholder">Password</string>
+    <string name="submit_button">Submit</string>
+    <string name="dont_have_account">Don\'t have an account? Sign up</string>
+</resources>

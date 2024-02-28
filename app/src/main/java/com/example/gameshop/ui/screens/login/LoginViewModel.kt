@@ -16,10 +16,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import retrofit2.Response
 
 @SuppressLint("StaticFieldLeak")
-class HomeViewModel constructor(private val userRepository: UserRepository, private val context: Context) : ViewModel() {
+class LoginViewModel(private val userRepository: UserRepository, private val context: Context) : ViewModel() {
     private val _login = MutableStateFlow(Login("", ""))
     private val _userState =
         MutableStateFlow<AuthenticatedUserState>(AuthenticatedUserState.Loading)

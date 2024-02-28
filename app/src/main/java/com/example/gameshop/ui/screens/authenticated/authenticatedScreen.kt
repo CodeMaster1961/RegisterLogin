@@ -46,7 +46,9 @@ import coil.compose.AsyncImage
 import com.example.gameshop.data.responses.Game
 import com.example.gameshop.ui.navigation.NavigationDestination
 import com.example.gameshop.ui.screens.login.AuthenticatedUserState
-import com.example.gameshop.ui.screens.login.HomeViewModel
+import com.example.gameshop.ui.screens.login.BottomNavigationBar
+import com.example.gameshop.ui.screens.login.LoginViewModel
+import com.example.gameshop.ui.screens.navigationDrawer.LeftSideNavigationDrawer
 import com.example.gameshop.ui.theme.GameShopTheme
 
 object AuthenticatedDestination : NavigationDestination {
@@ -56,7 +58,8 @@ object AuthenticatedDestination : NavigationDestination {
 @Composable
 fun AuthenticatedUserScreen(
     gameUiState: GameUiState,
-    viewModel: HomeViewModel,
+    leftSideNavigationDrawer: LeftSideNavigationDrawer,
+    viewModel: LoginViewModel,
     navigateToProfile: () -> Unit,
     logout: () -> Unit
 ) {
@@ -69,7 +72,7 @@ fun AuthenticatedUserScreen(
             Box(modifier = Modifier.fillMaxSize()) {
                 if (user != null) {
                     LeftSideNavigationDrawer(
-                        homeViewModel = viewModel,
+                        leftSideNavigationDrawer = leftSideNavigationDrawer,
                         drawerState = drawerState,
                         logout = logout,
                         navigateToProfile = navigateToProfile,
@@ -119,7 +122,7 @@ fun HamburgerMenu(onClick: () -> Unit) {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LeftSideNavigationDrawer(
-    homeViewModel: HomeViewModel,
+    leftSideNavigationDrawer: LeftSideNavigationDrawer,
     drawerState: DrawerState,
     logout: () -> Unit,
     navigateToProfile: () -> Unit,
@@ -166,6 +169,7 @@ fun LeftSideNavigationDrawer(
         }) {
         Scaffold {
             Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
+                BottomNavigationBar({})
                 if (welcomeMessage != null) {
                     Text(
                         text = welcomeMessage,
@@ -176,7 +180,7 @@ fun LeftSideNavigationDrawer(
                 }
             }
             HamburgerMenu(onClick = {
-                homeViewModel.toggleNavigationDrawer(drawerState, scope)
+                leftSideNavigationDrawer.toggleNavigationDrawer(drawerState, scope)
             })
         }
     }

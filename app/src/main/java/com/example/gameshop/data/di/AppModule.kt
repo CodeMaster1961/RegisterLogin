@@ -1,14 +1,14 @@
 package com.example.gameshop.data.di
 
 import android.content.Context
-import android.preference.PreferenceManager
 import com.example.gameshop.data.ApiService
 import com.example.gameshop.data.repository.GameRepository
 import com.example.gameshop.data.repository.UserRepository
 import com.example.gameshop.data.repositoryImplementation.GameRepositoryImplementation
 import com.example.gameshop.data.repositoryImplementation.UserRepositoryImplementation
 import com.example.gameshop.ui.screens.authenticated.AuthenticatedViewModel
-import com.example.gameshop.ui.screens.login.HomeViewModel
+import com.example.gameshop.ui.screens.login.LoginViewModel
+import com.example.gameshop.ui.screens.navigationDrawer.LeftSideNavigationDrawer
 import com.example.gameshop.ui.screens.profile.ProfileViewModel
 import com.example.gameshop.ui.screens.register.RegisterViewModel
 import com.example.gameshop.util.Constants.BASE_URL
@@ -36,12 +36,16 @@ val appModule = module {
         RegisterViewModel(get())
     }
 
-    viewModel<HomeViewModel> {
-        HomeViewModel(get(), androidContext())
+    viewModel<LoginViewModel> {
+        LoginViewModel(get(), androidContext())
     }
 
     viewModel<AuthenticatedViewModel> {
         AuthenticatedViewModel(get())
+    }
+
+    viewModel<LeftSideNavigationDrawer> {
+        LeftSideNavigationDrawer()
     }
 
     viewModel<ProfileViewModel> {
@@ -70,5 +74,5 @@ private fun retrofitInstance(token: String?): Retrofit {
 
  fun getToken(context: Context): String? {
     val sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE)
-    return sharedPreferences.getString("session-id", null)
+    return sharedPreferences.getString("auth_token", null)
 }

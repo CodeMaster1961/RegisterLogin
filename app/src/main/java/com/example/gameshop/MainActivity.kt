@@ -13,16 +13,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.gameshop.data.di.getToken
 import com.example.gameshop.ui.screens.authenticated.AuthenticatedUserScreen
 import com.example.gameshop.ui.screens.authenticated.AuthenticatedViewModel
 import com.example.gameshop.ui.screens.login.ChatScreen
 import com.example.gameshop.ui.screens.login.HomeDestination
 import com.example.gameshop.ui.screens.login.HomeScreen
-import com.example.gameshop.ui.screens.login.HomeViewModel
+import com.example.gameshop.ui.screens.login.LoginViewModel
+import com.example.gameshop.ui.screens.navigationDrawer.LeftSideNavigationDrawer
 import com.example.gameshop.ui.screens.profile.ProfileDestination
 import com.example.gameshop.ui.screens.profile.ProfileViewModel
-import com.example.gameshop.ui.screens.profile.UpdateProfileForm
 import com.example.gameshop.ui.screens.profile.UpdateProfileScreen
 import com.example.gameshop.ui.screens.register.RegisterDestination
 import com.example.gameshop.ui.screens.register.RegisterForm
@@ -46,7 +45,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = HomeDestination.route
                     ) {
                         composable(HomeDestination.route) {
-                            val homeViewModel = getViewModel<HomeViewModel>()
+                            val homeViewModel = getViewModel<LoginViewModel>()
                             HomeScreen(navigateUp = {
                                 navController.navigate(RegisterDestination.route)
                             }, viewModel = homeViewModel, navigateToAuthenticatedScreen = {
@@ -57,10 +56,12 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable("authenticated_screen") {
-                            val homeViewModel = getViewModel<HomeViewModel>()
+                            val homeViewModel = getViewModel<LoginViewModel>()
                             val authenticatedViewModel = getViewModel<AuthenticatedViewModel>()
+                            val leftSideNavigationDrawer = getViewModel<LeftSideNavigationDrawer>()
                             AuthenticatedUserScreen(
                                 gameUiState = authenticatedViewModel.gameUiState,
+                                leftSideNavigationDrawer = leftSideNavigationDrawer,
                                 viewModel = homeViewModel,
                                 logout = {
                                     navController.navigate(HomeDestination.route)
@@ -72,10 +73,15 @@ class MainActivity : ComponentActivity() {
 
                         composable(ProfileDestination.route) {
                             val profileViewModel = getViewModel<ProfileViewModel>()
-
-                            UpdateProfileScreen(profileViewModel = profileViewModel, navigateToHome = {
-                                navController.navigate("authenticated_screen")
-                            })
+                            val leftSideNavigationDrawer = getViewModel<LeftSideNavigationDrawer>()
+                            UpdateProfileScreen(
+                                profileViewModel = profileViewModel,
+                                leftSideNavigationDrawer = leftSideNavigationDrawer,
+                                navigateToHome = {
+                                    navController.navigate("authenticated_screen")
+                                }, logout = {
+                                    navController.navigate(HomeDestination.route)
+                                })
                         }
 
                         composable("chat_screen") {

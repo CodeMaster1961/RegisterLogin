@@ -52,6 +52,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gameshop.R
+import com.example.gameshop.data.models.BottomNavigationItem
 import com.example.gameshop.data.responses.Login
 import com.example.gameshop.ui.navigation.NavigationDestination
 import com.example.gameshop.ui.screens.register.ErrorIcon
@@ -69,7 +70,7 @@ fun HomeScreen(
     navigateUp: () -> Unit,
     navigateToAuthenticatedScreen: () -> Unit,
     stayOnHomeScreen: () -> Unit,
-    viewModel: HomeViewModel,
+    viewModel: LoginViewModel,
     modifier: Modifier = Modifier
 ) {
     val loginState = viewModel.login.collectAsState()
@@ -104,7 +105,7 @@ fun LoginForm(
     onValueChange: (Login) -> Unit,
     stringValidator: StringValidator = StringValidator(),
     onSubmit: () -> Unit,
-    viewModel: HomeViewModel,
+    viewModel: LoginViewModel,
     modifier: Modifier
 ) {
     var isPasswordVisible by remember {
@@ -229,7 +230,7 @@ fun ChatScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "Welcome to Chat screen")
-        BottomNavigationBar()
+        BottomNavigationBar({})
     }
 }
 
@@ -262,18 +263,10 @@ fun GameShopTopAppBarPreview() {
     }
 }
 
-data class BottomNavigationItem(
-    val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-    val hasNews: Boolean,
-    val badgeCount: Int? = null
-)
-
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomNavigationBar() {
+fun BottomNavigationBar(navigateUp: () -> Unit) {
     val items = listOf(
         BottomNavigationItem(
             title = "Home",
@@ -309,6 +302,7 @@ fun BottomNavigationBar() {
                         selected = selectedItemIndex == index,
                         onClick = {
                             selectedItemIndex = index
+                            navigateUp()
                         },
                         label = {
                             Text(text = item.title)
